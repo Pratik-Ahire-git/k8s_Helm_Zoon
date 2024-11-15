@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name}}
+spec:
+  type: {{ .Values.type}}
+  selector: {{ .Values.selector | toYaml | nindent 3}}
+  ports: {{.Values.service_Ports| toYaml | nindent 2}}
+    

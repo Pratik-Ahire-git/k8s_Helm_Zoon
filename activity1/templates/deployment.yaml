@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deploy
+  annotations: {{ .Values.annotations | toYaml | nindent 4}}
+spec:
+  minReadySeconds: {{ .Values.mainReadySeconds }}
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels: {{ .Values.selector_matchLabels | toYaml | nindent 6 }}
+  strategy: 
+    type: {{ .Values.Strategy.type }}
+    rollingUpdate: {{ .Values.Strategy.rollingUpdate | toYaml | nindent 6 }}
+  
+  template:
+    metadata:
+      labels: {{ .Values.matadata_labels | toYaml | nindent 7 }}
+      
+    spec:
+      containers:
+        - name: {{ .Values.container.name}}
+          image: {{ .Values.container.images }}
+          resources:  {{ .Values.resources | toYaml | nindent 12}}
+          ports:
+            - containerPort: {{ .Values.container_Port}}

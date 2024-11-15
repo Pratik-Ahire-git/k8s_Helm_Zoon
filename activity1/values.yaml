@@ -1,0 +1,50 @@
+###Deployment Section####
+
+# Deployment spec section
+mainReadySeconds: 1
+replicas: 2
+annotations:
+    kubernetes.io/change-cause: "version v1.0"
+
+# Deployment.spec.Selector section
+selector_matchLabels:
+    app: web
+ 
+# Deployment.spec.strategy  section
+Strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
+  
+# template.matadata sections
+matadata_labels:
+  app: web
+  version: v1.0
+  
+# template spec containers sections
+container:
+  name: web
+  images: shaikkhajaibrahim/dmtest:1.0
+
+resources:
+  requests:
+    memory: 24Mi
+    cpu: 50m
+  limits:
+    memory: 100Mi
+    cpu: 200m
+ports:
+  
+container_Port: 80
+
+
+###Service Section####
+
+name: nginx-svc
+type: NodePort
+selector:
+  app:  web
+service_Ports: 
+   - port: 80
+     targetPort: 80
